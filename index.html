@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undian BRILiaN Culture Fest</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- SheetJS Library for Excel & CSV Client-Side Parsing -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo-wrapper">
+        <img src="assets/logo.png" alt="BRILiaN Culture Fest 2026" class="brand-logo-img">
+      </div>
+      <div class="brand-text">
+        <h1>Undian BRILiaN Culture Fest</h1>
+        <p>Perayaan Semangat Insan BRILiaN & Doorprize Spesial</p>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="tab-stage">
+        <span>🎰 UNDIAN</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-participants">
+        <span>👥 PESERTA</span>
+        <span class="badge" id="nav-count-participants">0</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-winners">
+        <span>🏆 DAFTAR PEMENANG</span>
+        <span class="badge" id="nav-count-winners">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+
+    <div id="tab-stage" class="tab-content active">
+      <div class="stage-container">
+        
+        <div class="prize-selector-card glass-card">
+          <div class="section-title">
+            <span>Pilihan Hadiah</span>
+          </div>
+
+          <div class="prize-list-select" id="stage-prize-list">
+          </div>
+
+          <div class="rule-alert" id="stage-rule-alert">
+            ℹ️ <strong>Aturan Hadiah Reguler:</strong> Pekerja yang sudah memenangkan hadiah biasa akan diistirahatkan pada pengundian hadiah reguler berikutnya.
+          </div>
+        </div>
+
+        <div class="stage-arena glass-card" id="stage-arena-box">
+          <div class="active-prize-banner">
+            <span class="active-prize-badge" id="stage-active-badge">KATEGORI: HADIAH REGULER</span>
+            <h2 class="active-prize-title" id="stage-active-prize-name">Pilih Hadiah</h2>
+          </div>
+
+          <div class="spinner-box">
+            <div class="spinner-reel" id="spinner-reel">
+              <div class="spinner-name" id="spinner-name-display">SIAP DIUNDI</div>
+              <div class="spinner-sub" id="spinner-sub-display" style="display: none;"></div>
+            </div>
+          </div>
+
+          <div class="spin-action-group">
+            <button class="btn btn-primary btn-lg" id="btn-spin-start">
+              <span>✨ ACAK NAMA SEKARANG</span>
+            </button>
+            <button class="btn btn-outline-danger" id="btn-reset-stage-prize" title="Reset hasil pemenang khusus jenis hadiah ini">
+              <span>🔄 Putar Ulang Kategori Ini</span>
+            </button>
+          </div>
+
+          <div class="spin-stats">
+            <div class="stat-chip">
+              Peserta Layak (Pool): <strong id="stat-eligible-count">0</strong> Orang
+            </div>
+            <div class="stat-chip">
+              Total Pemenang: <strong id="stat-total-winners">0</strong> Orang
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="tab-participants" class="tab-content">
+      <div class="glass-card">
+        <div class="participants-header">
+          <div>
+            <h2>Data Pekerja</h2>
+            <p class="text-muted">Kelola nama pekerja, unit kerja, dan jabatan peserta undian doorprize</p>
+          </div>
+          <div class="flex-gap-1">
+            <input type="file" id="file-import-excel" accept=".xlsx, .xls, .csv" style="display: none;">
+            <button class="btn btn-gold" id="btn-import-excel">
+              <span>📂 Upload File Excel / CSV</span>
+            </button>
+            <button class="btn btn-bri" id="btn-import-sample">
+              <span>⚡ Load Data Sample</span>
+            </button>
+            <button class="btn btn-danger" id="btn-reset-participants">
+              <span>🗑️ Bersihkan Daftar</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <h3 class="mt-2 mb-2" style="font-size: 1.1rem;">Tambah Data Pekerja (Bulk)</h3>
+            <p class="text-muted mb-2" style="font-size: 0.85rem;">
+              Format: <em>Nama Pekerja - Unit Kerja - Jabatan</em><br>
+              <em>Contoh: Budi Santoso - Regional Office Jakarta - Relationship Manager</em>
+            </p>
+            <textarea class="form-control" id="bulk-input-text" placeholder="Budi Santoso - Regional Office Jakarta - Relationship Manager&#10;Siti Rahmawati - Divisi Finance - Senior Specialist&#10;Ahmad Hidayat - Divisi IT & Digital - Branch Manager"></textarea>
+            <button class="btn btn-primary mt-2" id="btn-bulk-add">
+              <span>➕ Tambahkan Pekerja</span>
+            </button>
+          </div>
+
+          <div>
+            <div style="background: rgba(3, 12, 30, 0.6); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--text-sky);">Ketentuan Undian Pekerja</h3>
+              <ul style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; padding-left: 1.25rem;">
+                <li><strong class="text-gold">Status Aktif (Hijau):</strong> Pekerja belum pernah menang, berhak ikut undian Hadiah Reguler maupun Hadiah Utama Motor.</li>
+                <li><strong style="color: #FBBA15;">Status Pemenang (Kuning):</strong> Pekerja sudah memenangkan hadiah biasa. Ter-eliminasi pada hadiah biasa selanjutnya, <strong style="color: #FFF;">namun otomatis AKTIF KEMBALI saat Hadiah Utama Motor!</strong></li>
+              </ul>
+            </div>
+
+            <div class="search-input-box mt-4">
+              <input type="text" class="form-control" id="search-participant-input" placeholder="🔍 Cari nama pekerja, unit kerja, atau jabatan...">
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive mt-4">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Pekerja</th>
+                <th>Unit Kerja</th>
+                <th>Jabatan</th>
+                <th>Status Hadiah Reguler</th>
+                <th>Status Hadiah Utama (Motor)</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="participants-table-body">
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="tab-winners" class="tab-content">
+      <div class="glass-card">
+        <div class="participants-header">
+          <div>
+            <h2>Daftar Pemenang</h2>
+            <p class="text-muted">Rekapitulasi seluruh pemenang pengundian BRILiaN Culture Fest 2026</p>
+          </div>
+          <div class="flex-gap-1">
+            <button class="btn btn-gold" id="btn-export-csv">
+              <span>📥 Download Rekap Pemenang (CSV)</span>
+            </button>
+            <button class="btn btn-danger" id="btn-reset-winners">
+              <span>🔄 Reset Rekap Pemenang</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive mt-2">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Pekerja</th>
+                <th>Unit Kerja</th>
+                <th>Jabatan</th>
+                <th>Hadiah Yang Dimenangkan</th>
+                <th>Kategori Hadiah</th>
+                <th>Waktu Pengundian</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="winners-table-body">
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <div class="modal-backdrop" id="winner-modal">
+    <div class="winner-card-modal" id="winner-card">
+      <div class="winner-header-area">
+        <div class="winner-logo-badge">
+          <img src="assets/logo.png" alt="BRILiaN Culture Fest 2026">
+        </div>
+        <div class="winner-crown">👑</div>
+        <div class="winner-prize-tag" id="modal-prize-tag">VOUCER INDOMARET/MAP (100.000)</div>
+        <div class="winner-count-subtitle" id="modal-winner-count-sub">BERHASIL MENGUNDI PEMENANG</div>
+      </div>
+
+      <div class="batch-winner-scroll-area">
+        <div class="batch-winner-grid" id="modal-winner-grid">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="btn-modal-redraw">
+          <span>🔄 Undi Ulang</span>
+        </button>
+        <button class="btn btn-primary btn-lg" id="btn-modal-save">
+          <span>✅ Simpan Seluruh Pemenang</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button class="audio-toggle-btn" id="audio-toggle-btn" title="Aktifkan / Matikan Suara">
+    🔊
+  </button>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
