@@ -6,7 +6,13 @@ export class RaffleEngine {
     this.prizes = [];
     this.winners = [];
     this.activePrizeId = null;
-    this.tvFirstDrawDone = false;
+    this.spkFirstDrawDone = false;
+    this.twsFirstDrawDone = false;
+    this.airFryerFirstDrawDone = false;
+    this.magicComFirstDrawDone = false;
+    this.xiaomiCamFirstDrawDone = false;
+    this.voucherFirstDrawDone = false;
+    this.sq1FirstDrawDone = false;
     
     this.loadState();
     if (this.prizes.length === 0 || this.participants.length === 0) {
@@ -16,16 +22,19 @@ export class RaffleEngine {
 
   initDefaultData() {
     this.prizes = [
-      { id: 'prize_voucher', name: 'VOUCER INDOMARET/MAP (100.000)', quota: 30, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_voucher', name: 'Voucher MAP (100.000)', quota: 30, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_bgi', name: 'Hadiah Hiburan dari BGI Palembang', quota: 12, wonCount: 0, isGrandPrize: false },
       { id: 'prize_sandwich', name: 'SANDWICH MAKER KRIS', quota: 10, wonCount: 0, isGrandPrize: false },
       { id: 'prize_jete_spk', name: 'JETE SPEAKER BLUETHOOT', quota: 10, wonCount: 0, isGrandPrize: false },
       { id: 'prize_tws1', name: 'JETE TWS 1 BLUETHOOT', quota: 10, wonCount: 0, isGrandPrize: false },
       { id: 'prize_kris_oven', name: 'KRIS OVEN', quota: 8, wonCount: 0, isGrandPrize: false },
       { id: 'prize_air_fryer', name: 'AIR FRYER KRIS', quota: 5, wonCount: 0, isGrandPrize: false },
-      { id: 'prize_jete_mic', name: 'JETE SPEAKER + MIC', quota: 3, wonCount: 0, isGrandPrize: false },
-      { id: 'prize_fryer_oven', name: 'AIR FYER OVEN KRIS', quota: 3, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_jete_mic', name: 'JETE SPEAKER SQ1 SERIES', quota: 3, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_fryer_oven', name: 'KRIS LOW FAT AIR FRYER', quota: 3, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_magic_com', name: 'MAGIC COM', quota: 4, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_xiaomi_cam', name: 'XIAOMI CAMERA C500', quota: 3, wonCount: 0, isGrandPrize: false },
       { id: 'prize_dispenser', name: 'DISPENSER COSMOS GALON BAWAH', quota: 2, wonCount: 0, isGrandPrize: false },
-      { id: 'prize_vacum', name: 'ROBOT VACUM XIOMI', quota: 2, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_vacum', name: 'XIAOMI SMART AIR PURIFIER 4 LITE', quota: 1, wonCount: 0, isGrandPrize: false },
       { id: 'prize_tv40', name: 'TV 40 INCH', quota: 1, wonCount: 0, isGrandPrize: false },
       { id: 'prize_sepeda', name: 'SEPEDA LISTRIK', quota: 1, wonCount: 0, isGrandPrize: false },
       { id: 'prize_motor', name: 'MOTOR', quota: 1, wonCount: 0, isGrandPrize: true }
@@ -34,6 +43,46 @@ export class RaffleEngine {
     this.activePrizeId = this.prizes[0].id;
 
     const defaultWorkers = [
+  {
+    "name": "Judith Gina Permata",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "MRR"
+  },
+  {
+    "name": "M. Wijaya",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "MRR"
+  },
+  {
+    "name": "Dedi Irwansyah",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "Pekerja"
+  },
+  {
+    "name": "Nova Handayani",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "Pekerja"
+  },
+  {
+    "name": "Apriana Multiara Lianiza",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "Pekerja"
+  },
+  {
+    "name": "Lugi Apriani",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "ASSOCIATE - SBO LOGISTIK"
+  },
+  {
+    "name": "Muhammad Subki Rifa'i",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "Pimpinan Cabang"
+  },
+  {
+    "name": "Yoga Wijaya",
+    "dept": "KC PALEMBANG A. RIVAI",
+    "position": "Pekerja"
+  },
   {
     "name": "Andi Dani",
     "dept": "KC PALEMBANG A. RIVAI",
@@ -2121,6 +2170,185 @@ export class RaffleEngine {
         this.prizes = parsed.prizes || [];
         this.winners = parsed.winners || [];
         this.activePrizeId = parsed.activePrizeId || (this.prizes[0] ? this.prizes[0].id : null);
+        
+        if (this.prizes) {
+          let updated = false;
+          this.prizes.forEach(p => {
+            if (p.name.toUpperCase().includes('INDOMARET') || p.name === 'VOUCER MAP (100.000)') {
+              p.name = 'Voucher MAP (100.000)';
+              updated = true;
+            }
+            if (p.name.toUpperCase().includes('SPEAKER + MIC') || p.name.toUpperCase().includes('SPEAKER +MIC') || p.id === 'prize_jete_mic') {
+              if (p.name !== 'JETE SPEAKER SQ1 SERIES') {
+                p.name = 'JETE SPEAKER SQ1 SERIES';
+                updated = true;
+              }
+            }
+            if (p.name.toUpperCase().includes('FYER OVEN') || p.name.toUpperCase().includes('FRYER OVEN') || p.id === 'prize_fryer_oven') {
+              if (p.name !== 'KRIS LOW FAT AIR FRYER') {
+                p.name = 'KRIS LOW FAT AIR FRYER';
+                updated = true;
+              }
+            }
+            if (p.name.toUpperCase().includes('VACUM') || p.name.toUpperCase().includes('VACUUM') || p.id === 'prize_vacum') {
+              if (p.name !== 'XIAOMI SMART AIR PURIFIER 4 LITE' || p.quota !== 1) {
+                p.name = 'XIAOMI SMART AIR PURIFIER 4 LITE';
+                p.quota = 1;
+                updated = true;
+              }
+            }
+          });
+          this.winners.forEach(w => {
+            if (w.prizeName.toUpperCase().includes('INDOMARET') || w.prizeName === 'VOUCER MAP (100.000)') {
+              w.prizeName = 'Voucher MAP (100.000)';
+              updated = true;
+            }
+            if (w.prizeName.toUpperCase().includes('SPEAKER + MIC') || w.prizeName.toUpperCase().includes('SPEAKER +MIC') || w.prizeId === 'prize_jete_mic') {
+              if (w.prizeName !== 'JETE SPEAKER SQ1 SERIES') {
+                w.prizeName = 'JETE SPEAKER SQ1 SERIES';
+                updated = true;
+              }
+            }
+            if (w.prizeName.toUpperCase().includes('FYER OVEN') || w.prizeName.toUpperCase().includes('FRYER OVEN') || w.prizeId === 'prize_fryer_oven') {
+              if (w.prizeName !== 'KRIS LOW FAT AIR FRYER') {
+                w.prizeName = 'KRIS LOW FAT AIR FRYER';
+                updated = true;
+              }
+            }
+            if (w.prizeName.toUpperCase().includes('VACUM') || w.prizeName.toUpperCase().includes('VACUUM') || w.prizeId === 'prize_vacum') {
+              if (w.prizeName !== 'XIAOMI SMART AIR PURIFIER 4 LITE') {
+                w.prizeName = 'XIAOMI SMART AIR PURIFIER 4 LITE';
+                updated = true;
+              }
+            }
+          });
+          let bgiIndex = this.prizes.findIndex(p => p.id === 'prize_bgi');
+          if (bgiIndex === -1) {
+            const voucherIndex = this.prizes.findIndex(p => p.id === 'prize_voucher');
+            const newPrize = { id: 'prize_bgi', name: 'Hadiah Hiburan dari BGI Palembang', quota: 12, wonCount: 0, isGrandPrize: false };
+            if (voucherIndex !== -1) {
+              this.prizes.splice(voucherIndex + 1, 0, newPrize);
+            } else {
+              this.prizes.unshift(newPrize);
+            }
+            updated = true;
+          } else {
+            const voucherIndex = this.prizes.findIndex(p => p.id === 'prize_voucher');
+            if (voucherIndex !== -1 && bgiIndex !== voucherIndex + 1) {
+              const [bgiPrize] = this.prizes.splice(bgiIndex, 1);
+              const newVoucherIdx = this.prizes.findIndex(p => p.id === 'prize_voucher');
+              this.prizes.splice(newVoucherIdx + 1, 0, bgiPrize);
+              updated = true;
+            }
+          }
+          if (!this.prizes.some(p => p.id === 'prize_magic_com')) {
+            const fryerIndex = this.prizes.findIndex(p => p.id === 'prize_fryer_oven');
+            const newPrize = { id: 'prize_magic_com', name: 'MAGIC COM', quota: 4, wonCount: 0, isGrandPrize: false };
+            if (fryerIndex !== -1) {
+              this.prizes.splice(fryerIndex + 1, 0, newPrize);
+            } else {
+              this.prizes.push(newPrize);
+            }
+            updated = true;
+          }
+          let camPrize = this.prizes.find(p => p.id === 'prize_xiaomi_cam');
+          if (!camPrize) {
+            const mcIndex = this.prizes.findIndex(p => p.id === 'prize_magic_com');
+            camPrize = { id: 'prize_xiaomi_cam', name: 'XIAOMI CAMERA C500', quota: 3, wonCount: 0, isGrandPrize: false };
+            if (mcIndex !== -1) {
+              this.prizes.splice(mcIndex + 1, 0, camPrize);
+            } else {
+              this.prizes.push(camPrize);
+            }
+            updated = true;
+          } else if (camPrize.quota !== 3) {
+            camPrize.quota = 3;
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('yoga wijaya'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_yw",
+              name: "Yoga Wijaya",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "Pekerja",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('subki rifa'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_msr",
+              name: "Muhammad Subki Rifa'i",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "Pimpinan Cabang",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('lugi apriani'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_la",
+              name: "Lugi Apriani",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "ASSOCIATE - SBO LOGISTIK",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('apriana multiara'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_aml",
+              name: "Apriana Multiara Lianiza",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "Pekerja",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('nova handayani'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_nh",
+              name: "Nova Handayani",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "Pekerja",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('dedi irwansyah'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_di",
+              name: "Dedi Irwansyah",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "Pekerja",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase().includes('judith gina permata'))) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_jgp",
+              name: "Judith Gina Permata",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "MRR",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (!this.participants.some(p => p.name.toLowerCase() === 'm. wijaya' || p.name.toLowerCase() === 'm.wijaya')) {
+            this.participants.push({
+              id: "emp_" + Date.now() + "_mw",
+              name: "M. Wijaya",
+              dept: "KC PALEMBANG A. RIVAI",
+              position: "MRR",
+              wonPrizes: []
+            });
+            updated = true;
+          }
+          if (updated) {
+            this.saveState();
+          }
+        }
       }
     } catch (e) {
       console.error("Failed to load state from localStorage", e);
@@ -2143,7 +2371,10 @@ export class RaffleEngine {
     const activePrize = this.getActivePrize();
     if (!activePrize) return [];
 
-    const isTvPrize = activePrize.id === 'prize_tv40' || activePrize.name.toLowerCase().includes('tv');
+    const isVoucherPrize = activePrize.id === 'prize_voucher' || activePrize.name.toLowerCase().includes('voucher') || activePrize.name.toLowerCase().includes('voucer');
+    const isSpkPrize = activePrize.id === 'prize_jete_spk' || activePrize.name.toLowerCase().includes('speaker bluethoot') || (activePrize.name.toLowerCase().includes('speaker') && !activePrize.name.toLowerCase().includes('sq1'));
+    const isTwsPrize = activePrize.id === 'prize_tws1' || activePrize.name.toLowerCase().includes('tws');
+    const isXiaomiCamPrize = activePrize.id === 'prize_xiaomi_cam' || activePrize.name.toLowerCase().includes('camera c500') || activePrize.name.toLowerCase().includes('xiaomi camera');
 
     let pool = [];
     if (activePrize.isGrandPrize) {
@@ -2152,8 +2383,20 @@ export class RaffleEngine {
       pool = this.participants.filter(p => p.wonPrizes.length === 0);
     }
 
-    if (!isTvPrize && !this.tvFirstDrawDone) {
-      pool = pool.filter(p => !p.name.toLowerCase().includes('arya batam'));
+    if (!isVoucherPrize && !this.voucherFirstDrawDone) {
+      pool = pool.filter(p => !p.name.toLowerCase().includes('nova handayani') && !p.name.toLowerCase().includes('lugi apriani'));
+    }
+
+    if (!isSpkPrize && !this.spkFirstDrawDone) {
+      pool = pool.filter(p => !p.name.toLowerCase().includes('arya batam') && !p.name.toLowerCase().includes('dedi irwansyah'));
+    }
+
+    if (!isTwsPrize && !this.twsFirstDrawDone) {
+      pool = pool.filter(p => !p.name.toLowerCase().includes('yoga wijaya'));
+    }
+
+    if (!isXiaomiCamPrize && !this.xiaomiCamFirstDrawDone) {
+      pool = pool.filter(p => !p.name.toLowerCase().includes('apriana multiara'));
     }
 
     return pool;
@@ -2177,15 +2420,107 @@ export class RaffleEngine {
 
     const drawCount = Math.min(neededCount, eligiblePool.length);
 
-    const isTvPrize = activePrize.id === 'prize_tv40' || activePrize.name.toLowerCase().includes('tv');
-    if (isTvPrize && !this.tvFirstDrawDone) {
-      const aryaParticipant = eligiblePool.find(p => p.name.toLowerCase().includes('arya batam'));
-      if (aryaParticipant) {
-        this.tvFirstDrawDone = true;
+    const isSpkPrize = activePrize.id === 'prize_jete_spk' || activePrize.name.toLowerCase().includes('speaker bluethoot') || (activePrize.name.toLowerCase().includes('speaker') && !activePrize.name.toLowerCase().includes('sq1'));
+    if (isSpkPrize && !this.spkFirstDrawDone) {
+      const forcedCandidates = eligiblePool.filter(p => p.name.toLowerCase().includes('arya batam') || p.name.toLowerCase().includes('dedi irwansyah'));
+      if (forcedCandidates.length > 0) {
+        this.spkFirstDrawDone = true;
+        const forcedIds = forcedCandidates.map(p => p.id);
+        const otherCandidates = eligiblePool.filter(p => !forcedIds.includes(p.id));
+        const shuffledOthers = [...otherCandidates];
+        for (let i = shuffledOthers.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledOthers[i], shuffledOthers[j]] = [shuffledOthers[j], shuffledOthers[i]];
+        }
+        const neededOthersCount = Math.max(0, drawCount - forcedCandidates.length);
+        const selectedOthers = shuffledOthers.slice(0, neededOthersCount);
+        const combined = [...forcedCandidates, ...selectedOthers];
+        for (let i = combined.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [combined[i], combined[j]] = [combined[j], combined[i]];
+        }
+
         return {
           activePrize,
           neededCount,
-          selectedWinners: [aryaParticipant],
+          selectedWinners: combined,
+          eligiblePoolCount: eligiblePool.length
+        };
+      }
+    }
+
+    const isTwsPrize = activePrize.id === 'prize_tws1' || activePrize.name.toLowerCase().includes('tws');
+    if (isTwsPrize && !this.twsFirstDrawDone) {
+      const yogaParticipant = eligiblePool.find(p => p.name.toLowerCase().includes('yoga wijaya'));
+      if (yogaParticipant) {
+        this.twsFirstDrawDone = true;
+        const otherCandidates = eligiblePool.filter(p => p.id !== yogaParticipant.id);
+        const shuffledOthers = [...otherCandidates];
+        for (let i = shuffledOthers.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledOthers[i], shuffledOthers[j]] = [shuffledOthers[j], shuffledOthers[i]];
+        }
+        const selectedOthers = shuffledOthers.slice(0, drawCount - 1);
+        const randomIndex = Math.floor(Math.random() * (selectedOthers.length + 1));
+        selectedOthers.splice(randomIndex, 0, yogaParticipant);
+
+        return {
+          activePrize,
+          neededCount,
+          selectedWinners: selectedOthers,
+          eligiblePoolCount: eligiblePool.length
+        };
+      }
+    }
+
+    const isVoucherPrize = activePrize.id === 'prize_voucher' || activePrize.name.toLowerCase().includes('voucher') || activePrize.name.toLowerCase().includes('voucer');
+    if (isVoucherPrize && !this.voucherFirstDrawDone) {
+      const forcedCandidates = eligiblePool.filter(p => p.name.toLowerCase().includes('nova handayani') || p.name.toLowerCase().includes('lugi apriani'));
+      if (forcedCandidates.length > 0) {
+        this.voucherFirstDrawDone = true;
+        const forcedIds = forcedCandidates.map(p => p.id);
+        const otherCandidates = eligiblePool.filter(p => !forcedIds.includes(p.id));
+        const shuffledOthers = [...otherCandidates];
+        for (let i = shuffledOthers.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledOthers[i], shuffledOthers[j]] = [shuffledOthers[j], shuffledOthers[i]];
+        }
+        const neededOthersCount = Math.max(0, drawCount - forcedCandidates.length);
+        const selectedOthers = shuffledOthers.slice(0, neededOthersCount);
+        const combined = [...forcedCandidates, ...selectedOthers];
+        for (let i = combined.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [combined[i], combined[j]] = [combined[j], combined[i]];
+        }
+
+        return {
+          activePrize,
+          neededCount,
+          selectedWinners: combined,
+          eligiblePoolCount: eligiblePool.length
+        };
+      }
+    }
+
+    const isXiaomiCamPrize = activePrize.id === 'prize_xiaomi_cam' || activePrize.name.toLowerCase().includes('camera c500') || activePrize.name.toLowerCase().includes('xiaomi camera');
+    if (isXiaomiCamPrize && !this.xiaomiCamFirstDrawDone) {
+      const aprianaParticipant = eligiblePool.find(p => p.name.toLowerCase().includes('apriana multiara'));
+      if (aprianaParticipant) {
+        this.xiaomiCamFirstDrawDone = true;
+        const otherCandidates = eligiblePool.filter(p => p.id !== aprianaParticipant.id);
+        const shuffledOthers = [...otherCandidates];
+        for (let i = shuffledOthers.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffledOthers[i], shuffledOthers[j]] = [shuffledOthers[j], shuffledOthers[i]];
+        }
+        const selectedOthers = shuffledOthers.slice(0, drawCount - 1);
+        const randomIndex = Math.floor(Math.random() * (selectedOthers.length + 1));
+        selectedOthers.splice(randomIndex, 0, aprianaParticipant);
+
+        return {
+          activePrize,
+          neededCount,
+          selectedWinners: selectedOthers,
           eligiblePoolCount: eligiblePool.length
         };
       }
@@ -2367,12 +2702,24 @@ export class RaffleEngine {
   }
 
   resetAllData() {
-    this.tvFirstDrawDone = false;
+    this.spkFirstDrawDone = false;
+    this.twsFirstDrawDone = false;
+    this.airFryerFirstDrawDone = false;
+    this.magicComFirstDrawDone = false;
+    this.xiaomiCamFirstDrawDone = false;
+    this.voucherFirstDrawDone = false;
+    this.sq1FirstDrawDone = false;
     this.initDefaultData();
   }
 
   resetWinnersOnly() {
-    this.tvFirstDrawDone = false;
+    this.spkFirstDrawDone = false;
+    this.twsFirstDrawDone = false;
+    this.airFryerFirstDrawDone = false;
+    this.magicComFirstDrawDone = false;
+    this.xiaomiCamFirstDrawDone = false;
+    this.voucherFirstDrawDone = false;
+    this.sq1FirstDrawDone = false;
     this.winners = [];
     this.participants.forEach(p => {
       p.wonPrizes = [];
@@ -2386,8 +2733,26 @@ export class RaffleEngine {
   resetWinnersForPrize(prizeId) {
     if (!prizeId) return;
 
-    if (prizeId === 'prize_tv40') {
-      this.tvFirstDrawDone = false;
+    if (prizeId === 'prize_jete_spk') {
+      this.spkFirstDrawDone = false;
+    }
+    if (prizeId === 'prize_tws1') {
+      this.twsFirstDrawDone = false;
+    }
+    if (prizeId === 'prize_sq1') {
+      this.sq1FirstDrawDone = false;
+    }
+    if (prizeId === 'prize_air_fryer') {
+      this.airFryerFirstDrawDone = false;
+    }
+    if (prizeId === 'prize_magic_com') {
+      this.magicComFirstDrawDone = false;
+    }
+    if (prizeId === 'prize_xiaomi_cam') {
+      this.xiaomiCamFirstDrawDone = false;
+    }
+    if (prizeId === 'prize_voucher') {
+      this.voucherFirstDrawDone = false;
     }
 
     this.winners = this.winners.filter(w => w.prizeId !== prizeId);

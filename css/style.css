@@ -5,41 +5,41 @@
   --bg-glass-card: rgba(255, 255, 255, 0.04);
   --border-color: rgba(0, 145, 255, 0.18);
   --border-focus: #0070F3;
-  
+
   --primary: #00529C;
   --primary-bright: #0070F3;
   --primary-hover: #003B7A;
   --primary-glow: rgba(0, 112, 243, 0.45);
-  
+
   --accent-orange: #F37021;
   --accent-orange-hover: #D95B0C;
   --accent-orange-glow: rgba(243, 112, 33, 0.5);
-  
+
   --accent-gold: #FBBA15;
   --accent-gold-dark: #D97706;
   --accent-gold-glow: rgba(251, 186, 21, 0.5);
-  
+
   --success: #10B981;
   --danger: #EF4444;
   --warning: #F59E0B;
   --info: #38BDF8;
-  
+
   --text-main: #FFFFFF;
   --text-muted: #94A3B8;
   --text-dim: #64748B;
   --text-sky: #BAE6FD;
-  
+
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 22px;
   --radius-xl: 30px;
-  
+
   --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 35px var(--primary-glow);
   --shadow-orange-glow: 0 0 40px var(--accent-orange-glow);
   --shadow-gold-glow: 0 0 45px var(--accent-gold-glow);
-  
+
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -51,7 +51,7 @@
 
 body {
   background-color: var(--bg-primary);
-  background-image: 
+  background-image:
     radial-gradient(circle at 10% 15%, rgba(0, 112, 243, 0.22) 0%, transparent 45%),
     radial-gradient(circle at 90% 85%, rgba(243, 112, 33, 0.15) 0%, transparent 45%),
     radial-gradient(circle at 50% 50%, rgba(2, 11, 29, 0.85) 0%, #020B1D 100%);
@@ -191,8 +191,15 @@ main {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .glass-card {
@@ -273,25 +280,29 @@ main {
   background: rgba(34, 139, 34, 0.25);
   border: 1px solid rgba(46, 204, 113, 0.55);
 }
+
 .prize-item-option.prize-color-green:hover {
   background: rgba(34, 139, 34, 0.45);
   border-color: #2ECC71;
 }
+
 .prize-item-option.prize-color-green.active {
   background: rgba(46, 204, 113, 0.45);
   border-color: #2ECC71;
   box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
 }
 
-/* Yellow Group (ROBOT VACUM, DISPENSER, AIR FYER OVEN, JETE SPEAKER+MIC) */
+/* Yellow Group (XIAOMI SMART AIR PURIFIER 4 LITE, DISPENSER, KRIS LOW FAT AIR FRYER, JETE SPEAKER SQ1 SERIES) */
 .prize-item-option.prize-color-yellow {
   background: rgba(234, 179, 8, 0.22);
   border: 1px solid rgba(250, 204, 21, 0.55);
 }
+
 .prize-item-option.prize-color-yellow:hover {
   background: rgba(234, 179, 8, 0.4);
   border-color: #FACC15;
 }
+
 .prize-item-option.prize-color-yellow.active {
   background: rgba(250, 204, 21, 0.45);
   border-color: #FACC15;
@@ -303,25 +314,29 @@ main {
   background: rgba(244, 114, 182, 0.22);
   border: 1px solid rgba(251, 146, 60, 0.55);
 }
+
 .prize-item-option.prize-color-peach:hover {
   background: rgba(244, 114, 182, 0.4);
   border-color: #FB923C;
 }
+
 .prize-item-option.prize-color-peach.active {
   background: rgba(251, 146, 60, 0.45);
   border-color: #FB923C;
   box-shadow: 0 0 15px rgba(251, 146, 60, 0.6);
 }
 
-/* Orange Group (SANDWICH MAKER, VOUCER INDOMARET) */
+/* Orange Group (SANDWICH MAKER, VOUCER MAP) */
 .prize-item-option.prize-color-orange {
   background: rgba(249, 115, 22, 0.25);
   border: 1px solid rgba(249, 115, 22, 0.6);
 }
+
 .prize-item-option.prize-color-orange:hover {
   background: rgba(249, 115, 22, 0.45);
   border-color: #F97316;
 }
+
 .prize-item-option.prize-color-orange.active {
   background: rgba(249, 115, 22, 0.5);
   border-color: #F97316;
@@ -671,8 +686,13 @@ main {
 }
 
 @keyframes bounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-8px); }
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-8px);
+  }
 }
 
 .winner-prize-tag {
@@ -738,8 +758,15 @@ main {
 }
 
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .winner-num-badge {
@@ -949,15 +976,38 @@ tr:hover td {
   box-shadow: 0 0 20px var(--primary-glow);
 }
 
-.text-gold { color: var(--accent-gold); }
-.text-muted { color: var(--text-muted); }
-.text-sky { color: var(--text-sky); }
-.flex-gap-1 { display: flex; gap: 0.5rem; }
-.flex-gap-2 { display: flex; gap: 1rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-4 { margin-top: 2rem; }
+.text-gold {
+  color: var(--accent-gold);
+}
 
-.btn-stop-glowing, .btn.is-stop-mode {
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-sky {
+  color: var(--text-sky);
+}
+
+.flex-gap-1 {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.flex-gap-2 {
+  display: flex;
+  gap: 1rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.btn-stop-glowing,
+.btn.is-stop-mode {
   background: linear-gradient(135deg, #EF4444, #DC2626) !important;
   color: #FFF !important;
   border: 1px solid rgba(239, 68, 68, 0.8) !important;
@@ -972,6 +1022,13 @@ tr:hover td {
 }
 
 @keyframes pulseStop {
-  from { transform: scale(1); box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); }
-  to { transform: scale(1.05); box-shadow: 0 0 35px rgba(239, 68, 68, 0.95); }
+  from {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+  }
+
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(239, 68, 68, 0.95);
+  }
 }

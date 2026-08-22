@@ -230,13 +230,13 @@ class AppController {
     if (['prize_motor', 'prize_sepeda', 'prize_tv40'].includes(prizeId)) {
       return 'prize-color-green';
     }
-    if (['prize_vacum', 'prize_dispenser', 'prize_fryer_oven', 'prize_jete_mic'].includes(prizeId)) {
+    if (['prize_vacum', 'prize_dispenser', 'prize_xiaomi_cam', 'prize_magic_com', 'prize_fryer_oven', 'prize_jete_mic'].includes(prizeId)) {
       return 'prize-color-yellow';
     }
     if (['prize_air_fryer', 'prize_kris_oven', 'prize_tws1', 'prize_jete_spk'].includes(prizeId)) {
       return 'prize-color-peach';
     }
-    if (['prize_sandwich', 'prize_voucher'].includes(prizeId)) {
+    if (['prize_sandwich', 'prize_voucher', 'prize_bgi'].includes(prizeId)) {
       return 'prize-color-orange';
     }
     return '';
@@ -338,10 +338,16 @@ class AppController {
       const shuffleLoop = () => {
         if (!this.spinning || this.decelerating) return;
 
-        const candidate = eligiblePool[index % eligiblePool.length];
-        this.spinnerNameDisplay.textContent = candidate.name;
+        if (Array.isArray(eligiblePool) && eligiblePool.length > 0) {
+          const candidate = eligiblePool[index % eligiblePool.length];
+          if (candidate && candidate.name) {
+            this.spinnerNameDisplay.textContent = candidate.name;
+          }
+        }
 
-        audioEngine.playTick(380 + (index % 12) * 25);
+        try {
+          audioEngine.playTick(380 + (index % 12) * 25);
+        } catch (e) {}
         index++;
 
         this.spinTimer = setTimeout(shuffleLoop, tickDelay);
@@ -359,37 +365,58 @@ class AppController {
 
   stopSpin() {
     if (!this.spinning || this.decelerating) return;
+
+    if (this.spinTimer) {
+      clearTimeout(this.spinTimer);
+      this.spinTimer = null;
+    }
     
     this.decelerating = true;
     this.btnSpinStart.disabled = true;
     this.btnSpinStart.querySelector('span').textContent = '⏳ BERHENTI...';
 
-    const eligiblePool = this.engine.getEligibleParticipants();
+    try {
+      audioEngine.playStopClick();
+    } catch (e) {}
+
+    let eligiblePool = this.engine.getEligibleParticipants();
+    if (!eligiblePool || eligiblePool.length === 0) {
+      eligiblePool = this.engine.participants;
+    }
+
     if (this.currentBatchResult) {
       this.autoDecelerate(eligiblePool, this.currentBatchResult);
+    } else {
+      this.spinning = false;
+      this.decelerating = false;
+      this.renderStageArenaInfo();
     }
   }
 
   autoDecelerate(eligiblePool, batchResult) {
     let steps = 0;
     const maxSteps = 12;
-    const { selectedWinners, activePrize } = batchResult;
+    const { selectedWinners, activePrize } = batchResult || {};
 
-    audioEngine.playTension();
+    try {
+      audioEngine.playTension();
+    } catch (e) {}
 
     const decelerate = () => {
       steps++;
       
-      let candidateName;
-      if (steps >= maxSteps - 1 && selectedWinners.length > 0) {
+      let candidateName = 'PEMENANG';
+      if (selectedWinners && selectedWinners.length > 0 && steps >= maxSteps - 1) {
         if (selectedWinners.length === 1) {
-          candidateName = selectedWinners[0].name;
+          candidateName = selectedWinners[0] ? selectedWinners[0].name : 'PEMENANG';
         } else {
           candidateName = `${selectedWinners.length} PEMENANG TERPILIH!`;
         }
-      } else {
+      } else if (Array.isArray(eligiblePool) && eligiblePool.length > 0) {
         const candidate = eligiblePool[Math.floor(Math.random() * eligiblePool.length)];
-        candidateName = candidate.name;
+        if (candidate && candidate.name) {
+          candidateName = candidate.name;
+        }
       }
 
       this.spinnerNameDisplay.textContent = candidateName;
@@ -401,11 +428,15 @@ class AppController {
         this.renderStageArenaInfo();
 
         setTimeout(() => {
-          this.showBatchWinnerModal(selectedWinners, activePrize);
-        }, 800);
+          if (selectedWinners && activePrize) {
+            this.showBatchWinnerModal(selectedWinners, activePrize);
+          }
+        }, 500);
 
       } else {
-        audioEngine.playTick(200 + steps * 20);
+        try {
+          audioEngine.playTick(200 + steps * 20);
+        } catch (e) {}
         const delay = 50 + Math.pow(steps, 1.7) * 10;
         setTimeout(decelerate, delay);
       }
