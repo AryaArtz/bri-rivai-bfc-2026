@@ -251,6 +251,29 @@ main {
   padding-right: 0;
 }
 
+.session-header-divider {
+  margin-top: 0.65rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-sky);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.session-header-divider:first-child {
+  margin-top: 0;
+}
+
+.session-header-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 145, 255, 0.25);
+}
+
 .prize-item-option {
   border-radius: var(--radius-sm);
   padding: 0.45rem 0.75rem;

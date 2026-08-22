@@ -23,15 +23,15 @@ export class RaffleEngine {
   initDefaultData() {
     this.prizes = [
       { id: 'prize_voucher', name: 'Voucher MAP (100.000)', quota: 30, wonCount: 0, isGrandPrize: false },
-      { id: 'prize_bgi', name: 'Hadiah Hiburan dari BGI Palembang', quota: 12, wonCount: 0, isGrandPrize: false },
-      { id: 'prize_sandwich', name: 'SANDWICH MAKER KRIS', quota: 10, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_bgi', name: 'Hadiah Hiburan By BGI Palembang', quota: 12, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_sandwich', name: 'SANDWICH MAKER KRIS By BRINS', quota: 10, wonCount: 0, isGrandPrize: false },
       { id: 'prize_jete_spk', name: 'JETE SPEAKER BLUETHOOT', quota: 10, wonCount: 0, isGrandPrize: false },
       { id: 'prize_tws1', name: 'JETE TWS 1 BLUETHOOT', quota: 10, wonCount: 0, isGrandPrize: false },
       { id: 'prize_kris_oven', name: 'KRIS OVEN', quota: 8, wonCount: 0, isGrandPrize: false },
       { id: 'prize_air_fryer', name: 'AIR FRYER KRIS', quota: 5, wonCount: 0, isGrandPrize: false },
       { id: 'prize_jete_mic', name: 'JETE SPEAKER SQ1 SERIES', quota: 3, wonCount: 0, isGrandPrize: false },
       { id: 'prize_fryer_oven', name: 'KRIS LOW FAT AIR FRYER', quota: 3, wonCount: 0, isGrandPrize: false },
-      { id: 'prize_magic_com', name: 'MAGIC COM', quota: 4, wonCount: 0, isGrandPrize: false },
+      { id: 'prize_magic_com', name: 'Magic com By Jamkrindo', quota: 4, wonCount: 0, isGrandPrize: false },
       { id: 'prize_xiaomi_cam', name: 'XIAOMI CAMERA C500', quota: 3, wonCount: 0, isGrandPrize: false },
       { id: 'prize_dispenser', name: 'DISPENSER COSMOS GALON BAWAH', quota: 2, wonCount: 0, isGrandPrize: false },
       { id: 'prize_vacum', name: 'XIAOMI SMART AIR PURIFIER 4 LITE', quota: 1, wonCount: 0, isGrandPrize: false },
@@ -977,11 +977,6 @@ export class RaffleEngine {
     "name": "Salsabila Mifta Salama",
     "dept": "KC PALEMBANG A. RIVAI",
     "position": "TELLER"
-  },
-  {
-    "name": "Fira Khairunnisa Rania",
-    "dept": "KC PALEMBANG A. RIVAI",
-    "position": "CUSTOMER SERVICE"
   },
   {
     "name": "Rini Anggraini",
@@ -2197,6 +2192,24 @@ export class RaffleEngine {
                 updated = true;
               }
             }
+            if (p.id === 'prize_bgi' || p.name.includes('Hadiah Hiburan')) {
+              if (p.name !== 'Hadiah Hiburan By BGI Palembang') {
+                p.name = 'Hadiah Hiburan By BGI Palembang';
+                updated = true;
+              }
+            }
+            if (p.id === 'prize_sandwich' || p.name.includes('SANDWICH MAKER')) {
+              if (p.name !== 'SANDWICH MAKER KRIS By BRINS') {
+                p.name = 'SANDWICH MAKER KRIS By BRINS';
+                updated = true;
+              }
+            }
+            if (p.id === 'prize_magic_com' || p.name.toUpperCase().includes('MAGIC COM')) {
+              if (p.name !== 'Magic com By Jamkrindo') {
+                p.name = 'Magic com By Jamkrindo';
+                updated = true;
+              }
+            }
           });
           this.winners.forEach(w => {
             if (w.prizeName.toUpperCase().includes('INDOMARET') || w.prizeName === 'VOUCER MAP (100.000)') {
@@ -2221,11 +2234,29 @@ export class RaffleEngine {
                 updated = true;
               }
             }
+            if (w.prizeId === 'prize_bgi' || w.prizeName.includes('Hadiah Hiburan')) {
+              if (w.prizeName !== 'Hadiah Hiburan By BGI Palembang') {
+                w.prizeName = 'Hadiah Hiburan By BGI Palembang';
+                updated = true;
+              }
+            }
+            if (w.prizeId === 'prize_sandwich' || w.prizeName.includes('SANDWICH MAKER')) {
+              if (w.prizeName !== 'SANDWICH MAKER KRIS By BRINS') {
+                w.prizeName = 'SANDWICH MAKER KRIS By BRINS';
+                updated = true;
+              }
+            }
+            if (w.prizeId === 'prize_magic_com' || w.prizeName.toUpperCase().includes('MAGIC COM')) {
+              if (w.prizeName !== 'Magic com By Jamkrindo') {
+                w.prizeName = 'Magic com By Jamkrindo';
+                updated = true;
+              }
+            }
           });
           let bgiIndex = this.prizes.findIndex(p => p.id === 'prize_bgi');
           if (bgiIndex === -1) {
             const voucherIndex = this.prizes.findIndex(p => p.id === 'prize_voucher');
-            const newPrize = { id: 'prize_bgi', name: 'Hadiah Hiburan dari BGI Palembang', quota: 12, wonCount: 0, isGrandPrize: false };
+            const newPrize = { id: 'prize_bgi', name: 'Hadiah Hiburan By BGI Palembang', quota: 12, wonCount: 0, isGrandPrize: false };
             if (voucherIndex !== -1) {
               this.prizes.splice(voucherIndex + 1, 0, newPrize);
             } else {
@@ -2243,7 +2274,7 @@ export class RaffleEngine {
           }
           if (!this.prizes.some(p => p.id === 'prize_magic_com')) {
             const fryerIndex = this.prizes.findIndex(p => p.id === 'prize_fryer_oven');
-            const newPrize = { id: 'prize_magic_com', name: 'MAGIC COM', quota: 4, wonCount: 0, isGrandPrize: false };
+            const newPrize = { id: 'prize_magic_com', name: 'Magic com By Jamkrindo', quota: 4, wonCount: 0, isGrandPrize: false };
             if (fryerIndex !== -1) {
               this.prizes.splice(fryerIndex + 1, 0, newPrize);
             } else {
@@ -2343,6 +2374,11 @@ export class RaffleEngine {
               position: "MRR",
               wonPrizes: []
             });
+            updated = true;
+          }
+          const firaIndex = this.participants.findIndex(p => p.name.toLowerCase().includes('fira khairunnisa'));
+          if (firaIndex !== -1) {
+            this.participants.splice(firaIndex, 1);
             updated = true;
           }
           if (updated) {

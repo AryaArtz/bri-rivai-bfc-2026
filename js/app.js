@@ -226,28 +226,48 @@ class AppController {
     this.statTotalWinners.textContent = totalWinners;
   }
 
+  getSessionInfo(prizeId) {
+    // Sesi 1: Voucher MAP -> JETE TWS 1 (Hadiah 1-5)
+    if (['prize_voucher', 'prize_bgi', 'prize_sandwich', 'prize_jete_spk', 'prize_tws1'].includes(prizeId)) {
+      return { session: 1, title: 'SESI 1', colorClass: 'prize-color-orange' };
+    }
+    // Sesi 2: Kris Oven -> Magic Com By Jamkrindo (Hadiah 6-10)
+    if (['prize_kris_oven', 'prize_air_fryer', 'prize_jete_mic', 'prize_fryer_oven', 'prize_magic_com'].includes(prizeId)) {
+      return { session: 2, title: 'SESI 2', colorClass: 'prize-color-peach' };
+    }
+    // Sesi 3: Xiaomi Camera -> TV 40 Inch (Hadiah 11-14)
+    if (['prize_xiaomi_cam', 'prize_dispenser', 'prize_vacum', 'prize_tv40'].includes(prizeId)) {
+      return { session: 3, title: 'SESI 3', colorClass: 'prize-color-yellow' };
+    }
+    // Sesi Hadiah Utama: Sepeda Listrik & Motor (Hadiah 15-16)
+    if (['prize_sepeda', 'prize_motor'].includes(prizeId)) {
+      return { session: 4, title: 'SESI HADIAH UTAMA', colorClass: 'prize-color-green' };
+    }
+    return { session: 1, title: 'SESI 1', colorClass: 'prize-color-orange' };
+  }
+
   getPrizeColorClass(prizeId) {
-    if (['prize_motor', 'prize_sepeda', 'prize_tv40'].includes(prizeId)) {
-      return 'prize-color-green';
-    }
-    if (['prize_vacum', 'prize_dispenser', 'prize_xiaomi_cam', 'prize_magic_com', 'prize_fryer_oven', 'prize_jete_mic'].includes(prizeId)) {
-      return 'prize-color-yellow';
-    }
-    if (['prize_air_fryer', 'prize_kris_oven', 'prize_tws1', 'prize_jete_spk'].includes(prizeId)) {
-      return 'prize-color-peach';
-    }
-    if (['prize_sandwich', 'prize_voucher', 'prize_bgi'].includes(prizeId)) {
-      return 'prize-color-orange';
-    }
-    return '';
+    return this.getSessionInfo(prizeId).colorClass;
   }
 
   renderStagePrizeList() {
     this.stagePrizeList.innerHTML = '';
     
+    let currentSession = null;
+
     this.engine.prizes.forEach(prize => {
+      const sessionInfo = this.getSessionInfo(prize.id);
+      
+      if (currentSession !== sessionInfo.session) {
+        currentSession = sessionInfo.session;
+        const headerEl = document.createElement('div');
+        headerEl.className = 'session-header-divider';
+        headerEl.innerHTML = `<span>${sessionInfo.title}</span>`;
+        this.stagePrizeList.appendChild(headerEl);
+      }
+
       const isSelected = prize.id === this.engine.activePrizeId;
-      const colorClass = this.getPrizeColorClass(prize.id);
+      const colorClass = sessionInfo.colorClass;
       const el = document.createElement('div');
       el.className = `prize-item-option ${colorClass} ${isSelected ? 'active' : ''} ${prize.isGrandPrize ? 'is-grand-prize' : ''}`;
       
